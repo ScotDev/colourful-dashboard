@@ -2,7 +2,7 @@ import React from 'react';
 
 import Navbar from './components/Navbar';
 import Dashboard from './components/functional/Dashboard';
-import Footer from './components/Footer';
+
 
 export default function App() {
     return (<>
@@ -16,6 +16,6 @@ export default function App() {
             <Dashboard></Dashboard>
 
         </div>
-        <Footer></Footer>
+
     </>)
 }
