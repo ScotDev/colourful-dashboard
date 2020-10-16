@@ -1,21 +1,22 @@
 import React from 'react';
 
+
+import GlobalFonts from './static/fonts/fonts';
+
 import Navbar from './components/Navbar';
 import Dashboard from './components/functional/Dashboard';
 
 
-export default function App() {
+
+
+export default function App({ currentUser }) {
     return (<>
-        <Navbar></Navbar>
-        <div className="content">
-            {/* <h2>Hello</h2> */}
-            {/* <div className="grid"> */}
+        <GlobalFonts />
+        <Navbar currentUser={currentUser}></Navbar>
 
 
-            {/* </div> */}
-            <Dashboard></Dashboard>
+        <Dashboard></Dashboard>
 
-        </div>
 
     </>)
 }

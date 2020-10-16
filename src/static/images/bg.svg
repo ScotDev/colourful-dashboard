@@ -1,11 +1,11 @@
-<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="2" y="72" width="1440" height="740" fill="url(#paint0_linear)"/>
-<rect x="2" y="812" width="1440" height="212" fill="#C73664"/>
-<rect x="2" width="1438" height="72" fill="#D15438"/>
+<svg width="1438" height="1024" viewBox="0 0 1438 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="801" width="1442" height="223" fill="#C73664"/>
+<rect y="72" width="1442" height="740" fill="url(#paint0_linear)"/>
+<rect width="1440" height="76" fill="#D15438"/>
 <ellipse cx="33.5" cy="1023.5" rx="199.5" ry="146.5" fill="white" fill-opacity="0.28"/>
 <ellipse cx="1421.5" cy="0.5" rx="199.5" ry="146.5" fill="white" fill-opacity="0.28"/>
 <defs>
-<linearGradient id="paint0_linear" x1="713.5" y1="72" x2="722" y2="812" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear" x1="712.488" y1="72" x2="720.976" y2="812" gradientUnits="userSpaceOnUse">
 <stop stop-color="#D15438"/>
 <stop offset="1" stop-color="#C73664"/>
 </linearGradient>

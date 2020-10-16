@@ -12,7 +12,11 @@ rules.push({
   test: /\.js$/,
   exclude: /node_modules/,
   use: [{ loader: 'babel-loader' }]
-}
+},
+  {
+    test: /\.(woff|woff2|eot|ttf|otf)$/,
+    use: [{ loader: 'file-loader' }],
+  }
 
 
 );
