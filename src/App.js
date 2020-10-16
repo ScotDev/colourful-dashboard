@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-import GlobalFonts from './static/fonts/fonts';
+// import GlobalFonts from './static/fonts/fonts.js';
 
 import Navbar from './components/Navbar';
 import Dashboard from './components/functional/Dashboard';
@@ -11,7 +11,7 @@ import Dashboard from './components/functional/Dashboard';
 
 export default function App({ currentUser }) {
     return (<>
-        <GlobalFonts />
+        {/* <GlobalFonts /> */}
         <Navbar currentUser={currentUser}></Navbar>
 
 

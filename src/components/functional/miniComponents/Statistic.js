@@ -5,9 +5,6 @@ import styled from 'styled-components';
 import increase_icon from '../../../static/images/increase_icon.svg';
 import decrease_icon from '../../../static/images/descrease_icon.svg';
 
-const UOM = "£"
-const upOrDown = "increase"
-
 const StatisticBlock = styled.div`
 display:flex;
 flex-direction:column;
@@ -28,6 +25,7 @@ padding-bottom:0.25rem;
 const StatChange = styled.p`
 font-size:0.9rem;
 display:flex;
+padding-top:0.1rem;
 `
 
 const ChangeIcon = styled.img`
@@ -36,20 +34,29 @@ width: 1rem;
 padding-right:0.25rem;
 `
 
-export default function Statistic({ stat_1 }) {
-    // This is fucked - need redux or context
-    const { title, statValue, changeValue, changeType } = stat_1;
-    // console.log(props.props)
+export default function Statistic({ stats1, stats2 }) {
 
-    return (
+    // This is fucked - need redux or context
+    // Should also be mapped out
+    // const { title, statValue, changeValue, changeLabel } = stats1;
+
+    return (<>
         <StatisticBlock>
-            <StatTitle>{title}</StatTitle>
-            <StatNumber>{UOM}{statValue}</StatNumber>
+            <StatTitle>{stats1.title}</StatTitle>
+            <StatNumber>{stats1.statValue}</StatNumber>
             <StatChange>
                 <ChangeIcon src={increase_icon}></ChangeIcon>
-                {changeValue}% {changeType}
+                {stats1.changeValue}% {stats1.changeLabel}
+            </StatChange>
+        </StatisticBlock>
+        <StatisticBlock>
+            <StatTitle>{stats2.title}</StatTitle>
+            <StatNumber>{stats2.statValue}</StatNumber>
+            <StatChange>
+                <ChangeIcon src={decrease_icon}></ChangeIcon>
+                {stats2.changeValue}% {stats2.changeLabel}
             </StatChange>
 
         </StatisticBlock>
-    )
+    </>)
 }
