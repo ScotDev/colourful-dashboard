@@ -1,3 +1,4 @@
+
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
@@ -12,7 +13,7 @@ const createWindow = () => {
     width: 1600,
     height: 1000,
     title: "Dashboard",
-
+    backgroundColor: '#D15438',
     frame: false,
     webPreferences: {
       enableRemoteModule: true,
@@ -22,6 +23,8 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  // mainWindow.maximize()
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();

@@ -2,18 +2,15 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import Statistic from './miniComponents/Statistic';
-import ChartLegend from './miniComponents/ChartLegend';
-
-// import ChartExampleImg from '../../static/images/chart_example.svg'
-import StatBreakdown from './miniComponents/StatBreakdown';
+import Statistic from '../miniComponents/Statistic';
+import StatBreakdown from '../miniComponents/StatBreakdown';
 
 const Card = styled.div`
     background: rgba(196, 196, 196, 0.79);
     border-radius: 10px;
     padding: 0.6rem 3rem 1rem 3rem;
-    min-height: 400px;
-    min-width: 400px;
+    height: 400px;
+    width: 375px;
     overflow:hidden;
     box-shadow: 7px 6px 25px 4px rgba(26,26,26,0.51);
 `
@@ -50,26 +47,26 @@ const Breakdown = styled.div`
 `
 
 
-export default function DataCard({ title, breakdownType, stats1, stats2 }) {
+export default function DataCard({ title, chartImg }) {
     return (
         <Card>
             <CardTitle>{title}</CardTitle>
             <CardContent>
                 <ColumnLeft>
 
-                    <Chart src={stats2.img}></Chart>
+                    <Chart src={chartImg}></Chart>
 
 
                 </ColumnLeft>
                 <ColumnRight>
                     <Breakdown>
 
-                        {breakdownType === "legend" ? <ChartLegend></ChartLegend> : <StatBreakdown></StatBreakdown>}
+                        <StatBreakdown></StatBreakdown>
 
                     </Breakdown>
                 </ColumnRight>
 
-                <Statistic stats1={stats1} stats2={stats2}></Statistic>
+                <Statistic></Statistic>
             </CardContent>
         </Card>
     )

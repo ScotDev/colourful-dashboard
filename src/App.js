@@ -4,7 +4,7 @@ import React from 'react';
 // import GlobalFonts from './static/fonts/fonts.js';
 
 import Navbar from './components/Navbar';
-import Dashboard from './components/functional/Dashboard';
+import Dashboard from './components/Dashboard';
 
 
 

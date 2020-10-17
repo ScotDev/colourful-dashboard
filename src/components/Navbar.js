@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 const remote = require('electron').remote
 import styled from 'styled-components';
 
+const currentUser = process.env.username;
+
 import brand_logo from '../static/images/logo.svg'
 import quitIcon from '../static/images/cancel.svg'
 import maximiseIcon from '../static/images/maximize.svg'
@@ -18,6 +20,7 @@ const StyledNavbar = styled.nav`
       /* Allows frameless, draggable window */
   /* https://www.electronjs.org/docs/api/frameless-window */
   -webkit-app-region: drag;
+
 `
 
 const BrandLogo = styled.img`
@@ -44,6 +47,7 @@ const NavMenu = styled.ul`
   margin: 0 1rem 0 auto;
   list-style-type: none;
   -webkit-app-region: no-drag;
+
   `
 
 const NavItem = styled.li`
@@ -80,7 +84,6 @@ background-color: transparent;
   cursor: pointer;
 }
 `
-
 const MinimiseButton = styled.img`
 height: 0.5rem;
 width: 1.5rem;
@@ -106,7 +109,7 @@ background-color: transparent;
 }
 `
 
-const currentUser = process.env.username;
+
 
 export default function Navbar() {
 
@@ -132,7 +135,7 @@ export default function Navbar() {
       <BrandLogo src={brand_logo}></BrandLogo>
       <BrandName>Predict</BrandName>
 
-      <NavUsername>Hi, {currentUser}</NavUsername>
+      <NavUsername>{currentUser}</NavUsername>
 
       <NavMenu>
         <NavItem>

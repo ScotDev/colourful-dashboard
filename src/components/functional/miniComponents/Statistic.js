@@ -34,26 +34,26 @@ width: 1rem;
 padding-right:0.25rem;
 `
 
-export default function Statistic({ stats1, stats2 }) {
+export default function Statistic() {
 
     // This is fucked - need redux or context
     // Should also be mapped out
 
     return (<>
         <StatisticBlock>
-            <StatTitle>{stats1.title}</StatTitle>
-            <StatNumber>{stats1.statValue}</StatNumber>
+            <StatTitle>Title</StatTitle>
+            <StatNumber>300,000</StatNumber>
             <StatChange>
                 <ChangeIcon src={increase_icon}></ChangeIcon>
-                {stats1.changeValue}% {stats1.changeLabel}
+                14.50% increase
             </StatChange>
         </StatisticBlock>
         <StatisticBlock>
-            <StatTitle>{stats2.title}</StatTitle>
-            <StatNumber>{stats2.statValue}</StatNumber>
+            <StatTitle>Title 2</StatTitle>
+            <StatNumber>450,000</StatNumber>
             <StatChange>
                 <ChangeIcon src={decrease_icon}></ChangeIcon>
-                {stats2.changeValue}% {stats2.changeLabel}
+                20.25% descrease
             </StatChange>
 
         </StatisticBlock>

@@ -29,7 +29,7 @@ text-align:left;
 padding-bottom:0.25rem;
 `
 
-const StatChange = styled.p`
+const StatChange = styled.div`
 font-size:0.9rem;
 display:flex;
 align-items:center;
