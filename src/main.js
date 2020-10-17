@@ -11,7 +11,11 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1600,
     height: 1000,
+    title: "Dashboard",
+
+    frame: false,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true
     }
   });
