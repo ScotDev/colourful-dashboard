@@ -38,7 +38,6 @@ export default function Statistic({ stats1, stats2 }) {
 
     // This is fucked - need redux or context
     // Should also be mapped out
-    // const { title, statValue, changeValue, changeLabel } = stats1;
 
     return (<>
         <StatisticBlock>

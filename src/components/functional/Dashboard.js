@@ -4,6 +4,9 @@ import styled from 'styled-components';
 
 import DataCard from './DataCard';
 
+import img1 from '../../static/images/chart_example.svg'
+import img2 from '../../static/images/chart_example2.svg'
+
 
 const Content = styled.div`
   height: 100vh;
@@ -23,15 +26,15 @@ const DashboardGrid = styled.div`
 
 
 export default function Dashboard() {
-    const [stats1, setStats1] = useState({ title: "Cases in DSV", statValue: "310,210", changeValue: "72.78", changeLabel: "of total" })
-    const [stats2, setStats2] = useState({ title: "Cases in Raben", statValue: "116,000", changeValue: "27.22", changeLabel: "of total" })
+    const [stats1, setStats1] = useState({ title: "Cases in DSV", img: img1, statValue: "310,210", changeValue: "72.78", changeLabel: "of total" })
+    const [stats2, setStats2] = useState({ title: "Cases in Raben", img: img2, statValue: "116,000", changeValue: "27.22", changeLabel: "of total" })
 
     return (
         <Content>
             <DashboardGrid>
-                <DataCard title="Total Inventory" stats1={stats1} stats2={stats2} ></DataCard>
+                <DataCard title="Total Inventory" breakdownType="legend" stats1={stats1} stats2={stats2} ></DataCard>
+                <DataCard title="Popular Products" breakdownType="stats" stats1={stats1} stats2={stats2} ></DataCard>
                 {/* <DataCard></DataCard>
-                <DataCard></DataCard>
                 <DataCard></DataCard>
                 <DataCard></DataCard>
                 <DataCard></DataCard> */}
