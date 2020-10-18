@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs'
 
 import styled from 'styled-components';
@@ -59,15 +59,29 @@ font-size:2rem;
 font-weight:400;
 `
 
-var now = dayjs()
 
-let dayOfWeek = dayjs(now).format('dddd')
-let date = dayjs(now).format('D')
-let month = dayjs(now).format('MMMM')
-let hours = dayjs(now).format('HH')
-let minutes = dayjs(now).format('mm')
+
+
 
 export default function DataCard() {
+
+
+    const [dayOfWeek, setdayOfWeek] = useState("0")
+    const [date, setDate] = useState("0")
+    const [month, setMonth] = useState("0")
+    const [hours, setHours] = useState("01")
+    const [minutes, setMinutes] = useState("01")
+
+    const updateDateTime = () => {
+        let now = dayjs()
+        setdayOfWeek(dayjs(now).format('dddd'))
+        setDate(dayjs(now).format('D'))
+        setMonth(dayjs(now).format('MMMM'))
+        setHours(dayjs(now).format('HH'))
+        setMinutes(dayjs(now).format('mm'))
+    }
+
+    setInterval(updateDateTime, 1000);
 
     return (
         <Card>
