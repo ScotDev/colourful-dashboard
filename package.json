@@ -86,6 +86,7 @@
   "dependencies": {
     "dayjs": "^1.9.3",
     "electron-squirrel-startup": "^1.0.0",
+    "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.0"
   }
 }

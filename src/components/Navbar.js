@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Route, MemoryRouter, NavLink } from 'react-router-dom';
 const remote = require('electron').remote
 import styled from 'styled-components';
 
@@ -9,6 +10,8 @@ import quitIcon from '../static/images/cancel.svg'
 import maximiseIcon from '../static/images/maximize.svg'
 import minimiseIcon from '../static/images/minimize.svg'
 
+import Dashboard from './Dashboard'
+import Settings from './Settings';
 
 const StyledNavbar = styled.nav`
   padding: 0.5rem 2rem;
@@ -55,16 +58,23 @@ const NavItem = styled.li`
   -webkit-app-region: no-drag;
 `
 
-const NavLink = styled.a`
+const NavStyledLink = styled.p`
 &:hover, &:focus{
-    text-decoration: none;
   border-bottom: 2px solid white;
-  cursor: pointer;
 }
+
+/* &:active{
+  border-bottom: 2px solid white;
+} */
+
 border-bottom:2px solid;
 border-color: ${props => props.active ? "white" : "transparent"};
 -webkit-app-region: no-drag;
+text-decoration: none;
+cursor: pointer;
 `
+
+
 
 const AppActionsmenu = styled.div`
   display: flex;
@@ -130,35 +140,46 @@ export default function Navbar() {
 
 
   return (
+    <MemoryRouter>
+      <StyledNavbar>
+        <BrandLogo src={brand_logo}></BrandLogo>
+        <BrandName>Predict</BrandName>
 
-    <StyledNavbar>
-      <BrandLogo src={brand_logo}></BrandLogo>
-      <BrandName>Predict</BrandName>
+        <NavUsername>{currentUser}</NavUsername>
 
-      <NavUsername>{currentUser}</NavUsername>
+        <NavMenu>
+          <NavItem>
+            <NavStyledLink>
+              <NavLink to="/dashboard">
+                Home
+          </NavLink>
+            </NavStyledLink>
+          </NavItem>
+          <NavItem>
+            <NavStyledLink>Forecasts</NavStyledLink>
+          </NavItem>
+          <NavItem>
+            <NavStyledLink>Inventory</NavStyledLink>
+          </NavItem>
+          <NavItem>
+            <NavStyledLink>
+              <NavLink to="/settings" >Settings</NavLink>
+            </NavStyledLink>
 
-      <NavMenu>
-        <NavItem>
-          <NavLink active>Home</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink>Forecasts</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink>Inventory</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink>Settings</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink>Help</NavLink>
-        </NavItem>
-        <AppActionsmenu>
-          <MaximiseButton id="maximizeBtn" src={maximiseIcon}></MaximiseButton>
-          <MinimiseButton id="minimizeBtn" src={minimiseIcon}></MinimiseButton>
-          <QuitButton id="quitBtn" src={quitIcon}></QuitButton>
-        </AppActionsmenu>
-      </NavMenu>
-    </StyledNavbar>
+          </NavItem>
+          <NavItem>
+            <NavStyledLink>Help</NavStyledLink>
+          </NavItem>
+          <AppActionsmenu>
+            <MaximiseButton id="maximizeBtn" src={maximiseIcon}></MaximiseButton>
+            <MinimiseButton id="minimizeBtn" src={minimiseIcon}></MinimiseButton>
+            <QuitButton id="quitBtn" src={quitIcon}></QuitButton>
+          </AppActionsmenu>
+        </NavMenu>
+      </StyledNavbar>
+
+      <Route exact path="/Dashboard" component={Dashboard} />
+      <Route exact path="/settings" component={Settings} />
+    </MemoryRouter>
   )
 }
