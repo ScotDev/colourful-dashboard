@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, MemoryRouter, NavLink } from 'react-router-dom';
 const remote = require('electron').remote
+import { ipcRenderer } from 'electron'
 import styled from 'styled-components';
 
 const currentUser = process.env.username;
@@ -74,8 +75,6 @@ text-decoration: none;
 cursor: pointer;
 `
 
-
-
 const AppActionsmenu = styled.div`
   display: flex;
   align-items: flex-end;
@@ -123,15 +122,12 @@ background-color: transparent;
 
 export default function Navbar() {
 
-
   useEffect(() => {
     if (document) {
-      document.getElementById('quitBtn').addEventListener("click", () => remote.getCurrentWindow().close())
       document.getElementById('minimizeBtn').addEventListener("click", () => remote.getCurrentWindow().minimize())
       document.getElementById('maximizeBtn').addEventListener("click", () => remote.getCurrentWindow().maximize())
     }
     return () => {
-      document.getElementById('quitBtn').removeEventListener("click", () => remote.getCurrentWindow().close())
       document.getElementById('minimizeBtn').removeEventListener("click", () => remote.getCurrentWindow().minimize())
       document.getElementById('maximizeBtn').removeEventListener("click", () => remote.getCurrentWindow().maximize())
     }
@@ -173,7 +169,7 @@ export default function Navbar() {
           <AppActionsmenu>
             <MaximiseButton id="maximizeBtn" src={maximiseIcon}></MaximiseButton>
             <MinimiseButton id="minimizeBtn" src={minimiseIcon}></MinimiseButton>
-            <QuitButton id="quitBtn" src={quitIcon}></QuitButton>
+            <QuitButton id="quitBtn" src={quitIcon} onClick={() => ipcRenderer.send('quit')}></QuitButton>
           </AppActionsmenu>
         </NavMenu>
       </StyledNavbar>

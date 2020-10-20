@@ -15,20 +15,31 @@ const createWindow = () => {
     title: "Dashboard",
     backgroundColor: '#D15438',
     frame: false,
+    show: false,
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true
     }
   });
 
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // mainWindow.maximize()
 
+  // Helps with flash of no content
+  mainWindow.once('ready-to-show', () => {
+
+    mainWindow.show()
+  })
+
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -51,3 +62,9 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+
+// Other custom commands
+ipcMain.on('quit', () => {
+  app.quit();
+})

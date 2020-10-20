@@ -69,8 +69,8 @@ export default function DataCard() {
     const [dayOfWeek, setdayOfWeek] = useState("0")
     const [date, setDate] = useState("0")
     const [month, setMonth] = useState("0")
-    const [hours, setHours] = useState("01")
-    const [minutes, setMinutes] = useState("01")
+    const [hours, setHours] = useState("00")
+    const [minutes, setMinutes] = useState("00")
 
     const updateDateTime = () => {
         let now = dayjs()
