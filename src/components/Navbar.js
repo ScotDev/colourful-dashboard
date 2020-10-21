@@ -3,6 +3,7 @@ import { Route, MemoryRouter, NavLink } from 'react-router-dom';
 const remote = require('electron').remote
 import { ipcRenderer } from 'electron'
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 const currentUser = process.env.username;
 
@@ -14,7 +15,7 @@ import minimiseIcon from '../static/images/minimize.svg'
 import Dashboard from './Dashboard'
 import Settings from './Settings';
 
-const StyledNavbar = styled.nav`
+const StyledNavbar = styled(motion.nav)`
   padding: 0.5rem 2rem;
   display: flex;
   background: transparent;
@@ -137,7 +138,7 @@ export default function Navbar() {
 
   return (
     <MemoryRouter>
-      <StyledNavbar>
+      <StyledNavbar initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <BrandLogo src={brand_logo}></BrandLogo>
         <BrandName>Predict</BrandName>
 

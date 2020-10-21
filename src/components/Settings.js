@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 import { dialog, remote } from 'electron';
 
@@ -9,7 +10,7 @@ const fs = require('fs');
 import styled from 'styled-components';
 
 
-const Content = styled.div`
+const Content = styled(motion.div)`
   height: 100vh;
   width: 100vw;
   padding: 1rem 1rem 0 0;
@@ -148,7 +149,7 @@ export default function Settings() {
 
 
     return (
-        <Content>
+        <Content initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <PageTitle>User preferences</PageTitle>
             <Divider></Divider>
             <SectionTitle>Theme colour</SectionTitle>
@@ -164,7 +165,6 @@ export default function Settings() {
             </RadioGroup>
 
             <SectionTitle>Output directory</SectionTitle>
-            {/* <SectionText>C:\Users\Callum\Documents\Predict\Reports</SectionText> */}
             <SectionText>{outputPath}</SectionText>
             <SelectionBtn onClick={() => { checkOutputDirectory() }}>Browse...</SelectionBtn>
 

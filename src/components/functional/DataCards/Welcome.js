@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import dayjs from 'dayjs'
+
 
 import styled from 'styled-components';
 
@@ -59,13 +60,7 @@ font-size:2rem;
 font-weight:400;
 `
 
-
-
-
-
 export default function DataCard() {
-
-
     const [dayOfWeek, setdayOfWeek] = useState("0")
     const [date, setDate] = useState("0")
     const [month, setMonth] = useState("0")
@@ -82,6 +77,14 @@ export default function DataCard() {
     }
 
     setInterval(updateDateTime, 1000);
+
+    // Fixes flash of initial state
+    useLayoutEffect(() => {
+        updateDateTime()
+        // return () => {
+        //     cleanup
+        // };
+    }, [])
 
     return (
         <Card>

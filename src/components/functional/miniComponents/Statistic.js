@@ -53,7 +53,7 @@ export default function Statistic() {
             <StatNumber>450,000</StatNumber>
             <StatChange>
                 <ChangeIcon src={decrease_icon}></ChangeIcon>
-                20.25% descrease
+                20.25% decrease
             </StatChange>
 
         </StatisticBlock>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 import styled from 'styled-components';
 
@@ -11,7 +12,7 @@ import img1 from '../static/images/chart_example.svg'
 import img2 from '../static/images/chart_example2.svg'
 
 
-const Content = styled.div`
+const Content = styled(motion.div)`
   height: 100vh;
   width: 100vw;
   padding: 1rem 1rem 0 0;
@@ -29,23 +30,18 @@ const DashboardGrid = styled.div`
 
 
 export default function Dashboard() {
-    // const [stats1, setStats1] = useState({ title: "Cases in DSV", img: img1, statValue: "310,210", changeValue: "72.78", changeLabel: "of total" })
-    // const [stats2, setStats2] = useState({ title: "Cases in Raben", img: img2, statValue: "116,000", changeValue: "27.22", changeLabel: "of total" })
+
+
 
     return (
-        <Content>
+        <Content initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <DashboardGrid>
                 <Welcome></Welcome>
+                <Large title="Inventory Value"></Large>
                 <Basic title="Total Inventory" chartImg={img1} ></Basic>
                 <Detailed title="Popular Products" chartImg={img2}></Detailed>
-                <Large title="Inventory Value"></Large>
-                {/* <DataCard></DataCard>
-                <DataCard></DataCard>
-                <DataCard></DataCard>
-                <DataCard></DataCard> */}
+
             </DashboardGrid>
-
-
         </Content>
     )
 }
