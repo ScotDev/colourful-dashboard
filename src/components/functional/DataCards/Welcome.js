@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react';
-import dayjs from 'dayjs'
-
+import dayjs from 'dayjs';
+import { motion } from 'framer-motion';
 
 import styled from 'styled-components';
 
@@ -12,6 +12,14 @@ const Card = styled.div`
     min-height: 300px;
     min-width: 300px;
     overflow:hidden;
+    border-radius:20px;
+
+    /* box-shadow:  17px 17px 34px transparent, 
+             -17px -17px 34px transparent; */
+
+
+             /* background: linear-gradient(178.72deg, #D15438 1.08%, #C73664 98.91%); */
+
 `
 
 const CardContent = styled.div`
