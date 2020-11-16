@@ -1,5 +1,5 @@
 
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, dialog, nativeImage } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -65,6 +65,40 @@ app.on('activate', () => {
 
 
 // Other custom commands
+
+// When close button is clicked
 ipcMain.on('quit', () => {
-  app.quit();
+  dialog.showMessageBox(null, {
+    type: "info",
+    buttons: ['OK', 'Cancel'],
+    defaultId: 0,
+    cancelId: 1,
+    title: 'Exit application',
+    message: "Are you sure you want to quit?",
+    detail: "Any unsaved data might be lost"
+  }).then((data) => {
+    if (data.response === 0) {
+      app.quit()
+    } else {
+      console.log("App quit aborted by user")
+    }
+  }).catch(err => {
+    console.log(err)
+    dialog.showErrorBox('App quit error', 'There was an error quitting the application gracefully')
+  })
+})
+
+
+const showNotification = () => {
+  const img = nativeImage.createFromPath('src/static/images/logo.png')
+  const details = {
+    title: 'Predict minimised',
+    body: 'The app is still running in the background',
+    icon: img
+  }
+  new Notification(details).show()
+}
+
+ipcMain.on('notificationPrompt', () => {
+  showNotification()
 })

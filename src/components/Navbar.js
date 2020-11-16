@@ -134,8 +134,6 @@ export default function Navbar() {
     }
   }, [])
 
-
-
   return (
     <MemoryRouter>
       <StyledNavbar initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -169,7 +167,7 @@ export default function Navbar() {
           </NavItem>
           <AppActionsmenu>
             <MaximiseButton id="maximizeBtn" src={maximiseIcon}></MaximiseButton>
-            <MinimiseButton id="minimizeBtn" src={minimiseIcon}></MinimiseButton>
+            <MinimiseButton id="minimizeBtn" src={minimiseIcon} onClick={() => ipcRenderer.send('notificationPrompt')}></MinimiseButton>
             <QuitButton id="quitBtn" src={quitIcon} onClick={() => ipcRenderer.send('quit')}></QuitButton>
           </AppActionsmenu>
         </NavMenu>

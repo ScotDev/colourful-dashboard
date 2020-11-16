@@ -1,6 +1,6 @@
 {
-  "name": "colourful-dashboard",
-  "productName": "colourful-dashboard",
+  "name": "predict",
+  "productName": "Predict",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
@@ -24,7 +24,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "colourful_dashboard"
+            "name": "predict"
           }
         },
         {
