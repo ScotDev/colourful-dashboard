@@ -15,7 +15,7 @@ const Card = styled(motion.div)`
     min-height: 400px;
     min-width: 600px;
     overflow:hidden;
-    box-shadow: 7px 6px 25px 4px rgba(26,26,26,0.51);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
 `
 const CardTitle = styled.h3`
     font-size:1.4rem;
@@ -52,7 +52,7 @@ const Breakdown = styled.div`
 
 export default function DataCard({ title }) {
     return (
-        <Card whileHover={{ scale: 1.02, origin: 0, boxShadow: "10px 12px 35px 6px rgba(26,26,26,0.4)" }} transition={{ type: "spring", stiffness: 300 }}>
+        <Card whileHover={{ scale: 1.01, origin: 0, boxShadow: "0 8px 16px 0 rgba(0,0,0,0.6)", cursor: "pointer" }} transition={{ type: "spring", stiffness: 100 }}>
             <CardTitle>{title}</CardTitle>
             <CardContent>
                 <ColumnLeft>

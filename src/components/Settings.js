@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Toggle from 'react-toggle';
+import { ToastProvider, useToasts } from 'react-toast-notifications'
 
-import { dialog, remote } from 'electron';
+const log = require('electron-log')
+
+import { dialog, remote, ipcRenderer } from 'electron';
 
 const path = require('path');
 const os = require("os");
 const fs = require('fs');
 
 import styled from 'styled-components';
-
+import { settings } from 'cluster';
 
 const Content = styled(motion.div)`
   height: 100vh;
@@ -41,29 +45,19 @@ font-size:1.25rem;
 margin-bottom:0.5rem;
 `
 
-const SelectionBtn = styled.button`
+const SelectionBtn = styled(motion.button)`
 border-radius:10px;
-border: 2px solid #fff;
+border: 1px solid #fff;
 color:#fff;
 background-color:#C73664;
 padding:0.5rem 1rem;
 margin: 0.5rem 0;
 font-size:1.25rem;
-
-transition:background-color 0.05s ease-in;
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
 
 &:hover, &:focus{
-    background-color:#5e5c5c;
     outline:none;
 }
-`
-
-const RadioGroup = styled.fieldset`
-display:flex;
-flex-direction:column;
-margin-bottom:1rem;
-border:none;
-outline:none;
 `
 const OptionGroup = styled.div`
 display:flex;
@@ -71,23 +65,28 @@ align-items:center;
 margin-bottom:0.75rem;
 `
 
-// Custom styles required
-const RadioBtn = styled.input`
-`
 const OptionLabel = styled.label`
 font-size:1.25rem;
 margin-left:1rem;
 `
 
-const Toggle = styled.input`
-border:2px solid #fff
-`
-
 
 export default function Settings() {
+    const { addToast } = useToasts()
+
     let initialPath = path.join(os.homedir(), "/Documents/Predict/Reports")
 
     const [outputPath, setOutputPath] = useState(null)
+    // This should be loaded from local json into redux and then into local state
+    const [notificationPreference, setNotificationPreference] = useState(true)
+    const [themePreference, setThemePreference] = useState(null)
+
+    // This should come through redux
+    // ipcRenderer.on('settings:get', (settings) => {
+    //     setNotificationPreference(settings.notifications)
+    //     setThemePreference(settings.theme)
+    //     console.log(settings)
+    // })
 
 
     // This does nothing right now
@@ -130,6 +129,30 @@ export default function Settings() {
         })
     }
 
+    const handleNotificationPreferenceChange = () => {
+        if (notificationPreference === true) {
+            setNotificationPreference(false)
+        } else {
+            setNotificationPreference(true)
+        }
+        ipcRenderer.send('settings:set', ({ "notifications": notificationPreference }))
+        addToast('Notifications preference saved successfully', { appearance: 'success' })
+    }
+
+    const handleThemePreferenceChange = () => {
+        if (themePreference === "Light") {
+            setThemePreference("Dark")
+        } else {
+            setThemePreference("Light")
+        }
+
+        // ipcRenderer.send('settings:set', ({ "theme": themePreference })
+        // )
+
+        // addToast('Theme preference saved successfully', { appearance: 'success' })
+
+    }
+
 
     // Component state doesn't persist on navigation, I guess this is fine if I can write to redux store/save config to json before navigating away
 
@@ -153,25 +176,39 @@ export default function Settings() {
             <PageTitle>User preferences</PageTitle>
             <Divider></Divider>
             <SectionTitle>Theme colour</SectionTitle>
-            <RadioGroup>
-                <OptionGroup>
-                    <RadioBtn id="light" name="light" type={"radio"} checked></RadioBtn>
-                    <OptionLabel htmlFor="light">Light theme</OptionLabel>
-                </OptionGroup>
-                <OptionGroup>
-                    <RadioBtn id="dark" name="dark" type={"radio"} disabled></RadioBtn>
-                    <OptionLabel htmlFor="dark">Dark theme</OptionLabel>
-                </OptionGroup>
-            </RadioGroup>
+
+            <OptionGroup>
+                <Toggle
+                    icons={false}
+                    id='theme-preference'
+                    className="theme-toggle"
+                    defaultChecked={themePreference === "Light" ? true : false}
+                    onChange={() => handleThemePreferenceChange()}
+                />
+                <OptionLabel htmlFor='theme-preference'>{themePreference}</OptionLabel>
+            </OptionGroup>
+
 
             <SectionTitle>Output directory</SectionTitle>
             <SectionText>{outputPath}</SectionText>
-            <SelectionBtn onClick={() => { checkOutputDirectory() }}>Browse...</SelectionBtn>
+            <SelectionBtn initial={{ y: 0 }} whileHover={{ y: -2, origin: 0, boxShadow: "0 8px 16px 0 rgba(0,0,0,0.6)", cursor: "pointer" }} transition={{
+                duration: 0.1,
+                type: "Inertia",
+                stiffness: 500
+            }} onClick={() => { checkOutputDirectory() }}>Browse...</SelectionBtn>
 
             <SectionTitle>Notifications</SectionTitle>
-            <OptionGroup>
+            {/* <OptionGroup>
                 <Toggle name="notifications" id="notifications" type="checkbox"></Toggle>
                 <OptionLabel htmlFor="notifications">On</OptionLabel>
+            </OptionGroup> */}
+            <OptionGroup>
+                <Toggle
+                    id='notification-preference'
+                    defaultChecked={notificationPreference}
+                    onChange={() => handleNotificationPreferenceChange()}
+                />
+                <OptionLabel htmlFor='notification-preference'>{notificationPreference ? "On" : "Off"}</OptionLabel>
             </OptionGroup>
 
             <Divider></Divider>

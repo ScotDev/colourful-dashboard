@@ -1,15 +1,54 @@
 
 const { app, BrowserWindow, ipcMain, Notification, dialog, nativeImage } = require('electron');
 const path = require('path');
+const fs = require('fs');
+const log = require('electron-log');
+
+// This might not work when built with webpack
+// const Store = require('../Store');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
 
+// Init store (user settings) and defaults
+// const store = new Store({
+//   configName: 'user-settings',
+//   defaults: {
+//     settings: {
+//       theme: "Light",
+//       notifications: true
+//     }
+//   }
+// })
+let fileLocation = app.getPath(
+  'userData') + "/" + "user-settings" + ".json";
+console.log(fileLocation)
+
+const storeData = (data) => {
+  try {
+    fs.writeFileSync(fileLocation, JSON.stringify(data))
+  } catch (err) {
+    console.error("Couldn't save data", err)
+  }
+}
+
+
+const loadData = (fileLocation) => {
+  try {
+    return fs.readFileSync(fileLocation, 'utf8')
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
+let mainWindow;
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1600,
     height: 1000,
     title: "Dashboard",
@@ -30,10 +69,10 @@ const createWindow = () => {
 
   // Helps with flash of no content
   mainWindow.once('ready-to-show', () => {
-
     mainWindow.show()
   })
 
+  log.info("Application started")
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -44,7 +83,18 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow()
+
+  // mainWindow.webContents.on('dom-ready', () => {
+  //   mainWindow.webContents.send('settings:get', loadData(fileLocation))
+  // })
+
+  // log.info(store.get('settings'))
+}
+
+
+);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -79,12 +129,14 @@ ipcMain.on('quit', () => {
   }).then((data) => {
     if (data.response === 0) {
       app.quit()
+      log.info("Application exited by user")
     } else {
       console.log("App quit aborted by user")
     }
   }).catch(err => {
     console.log(err)
     dialog.showErrorBox('App quit error', 'There was an error quitting the application gracefully')
+    log.error("Application hard quit")
   })
 })
 
@@ -100,5 +152,19 @@ const showNotification = () => {
 }
 
 ipcMain.on('notificationPrompt', () => {
+  // if (loadData(fileLocation)[0] === true) {
   showNotification()
+  console.log("Notifications enabled")
+  // } else {
+  //   console.log("Notifications disabled")
+  // }
+
+  log.info("Application minimised")
+})
+
+// Update user settings
+ipcMain.on('settings:set', (data) => {
+  storeData(data)
+  // mainWindow.webContents.send('settings:get', store.get('settings'))
+  console.log("Update user settings to: ", data)
 })

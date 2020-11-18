@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { ToastProvider } from 'react-toast-notifications';
+// import { Snack } from '../snackbar';
+
 // import GlobalFonts from './static/fonts/fonts.js';
 
 import Navbar from './components/Navbar';
@@ -18,7 +21,7 @@ export default function App() {
         // This delay will be replaced by data fetching in future
         setTimeout(() => {
             setLoading(!isLoading)
-        }, 2500)
+        }, 2000)
 
         console.log(isLoading)
     }, [])
@@ -27,10 +30,15 @@ export default function App() {
         return <LoadingScreen></LoadingScreen>
     } else {
         return (<>
+            <ToastProvider autoDismiss
+                autoDismissTimeout={4000}
+                placement="bottom-right">
 
-            <Navbar></Navbar>
+                <Navbar></Navbar>
 
-            <Dashboard></Dashboard>
+                <Dashboard></Dashboard>
+
+            </ToastProvider>
         </>)
     }
 

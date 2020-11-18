@@ -85,9 +85,12 @@
   },
   "dependencies": {
     "dayjs": "^1.9.3",
+    "electron-log": "^4.3.0",
     "electron-squirrel-startup": "^1.0.0",
     "framer-motion": "^2.9.4",
     "react-router-dom": "^5.2.0",
+    "react-toast-notifications": "^2.4.0",
+    "react-toggle": "^4.1.1",
     "styled-components": "^5.2.0"
   }
 }
