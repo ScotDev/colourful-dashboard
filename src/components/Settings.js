@@ -122,25 +122,30 @@ function Settings(props) {
     }
 
     // These two change handlers should be combined if possible
-    const handleNotificationPreferenceChange = () => {
-        if (notificationPreference === true) {
-            setNotificationPreference(false)
-        } else {
-            setNotificationPreference(true)
-        }
-        ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference }))
+    const handleNotificationPreferenceChange = (e) => {
+        // if (notificationPreference === true) {
+        //     setNotificationPreference(false)
+        // } else {
+        //     setNotificationPreference(true)
+        // }
+        // ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference }))
+
+        // props.updateSettings(e.target.name, e.target.name)
+        console.log(e.target.checked)
+
         addToast('Notifications preference saved successfully', { appearance: 'success' })
     }
 
-    const handleThemePreferenceChange = () => {
+    const handleThemePreferenceChange = (e) => {
         if (themePreference === "Light") {
             setThemePreference("Dark")
         } else {
             setThemePreference("Light")
         }
 
-        ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference })
-        )
+        // ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference })
+        // )
+        // console.log(e.target.checked)
 
         addToast('Theme preference saved successfully', { appearance: 'success' })
 
@@ -156,10 +161,7 @@ function Settings(props) {
 
     // Is mounted workaround not recommeneded and doesn't seem to work. Redux may fix this by removing component level state altogether
     useEffect(() => {
-
         let isMounted = true;
-
-
 
         if (isMounted) {
             setOutputPath(initialPath)
@@ -181,9 +183,10 @@ function Settings(props) {
                 <Toggle
                     icons={false}
                     id='theme-preference'
+                    name="theme"
                     className="theme-toggle"
-                    defaultChecked={themePreference === "Light" ? true : false}
-                    onChange={() => handleThemePreferenceChange()}
+                    defaultChecked={themePreference === "Light" ? 0 : 1}
+                    onChange={(e) => handleThemePreferenceChange(e)}
                 />
                 <OptionLabel htmlFor='theme-preference'>{themePreference}</OptionLabel>
             </OptionGroup>
@@ -205,10 +208,12 @@ function Settings(props) {
             <OptionGroup>
                 <Toggle
                     id='notification-preference'
-                    defaultChecked={notificationPreference}
-                    onChange={() => handleNotificationPreferenceChange()}
+                    name="notifications"
+                    defaultChecked={props.settings[0].notifications}
+                    onChange={(e) => handleNotificationPreferenceChange(e)}
                 />
-                <OptionLabel htmlFor='notification-preference'>{notificationPreference ? "On" : "Off"}</OptionLabel>
+                <OptionLabel htmlFor='notification-preference'>{props.settings[0].notifications ? "On" : "Off"}</OptionLabel>
+                <OptionLabel htmlFor='notification-preference'>{props.settings[0].notifications.toString()}</OptionLabel>
             </OptionGroup>
 
             <Divider></Divider>
@@ -224,4 +229,12 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Settings);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateSettings: (settingName, settingContent) => { dispatch({ type: UPDATE_SETTING, settingName: settingName, settingContent: settingContent }) }
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);
