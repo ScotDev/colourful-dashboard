@@ -12,39 +12,10 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
-// Init store (user settings) and defaults
-// const store = new Store({
-//   configName: 'user-settings',
-//   defaults: {
-//     settings: {
-//       theme: "Light",
-//       notifications: true
-//     }
-//   }
-// })
-let fileLocation = app.getPath(
-  'userData') + "/" + "user-settings" + ".json";
-console.log(fileLocation)
-
-const storeData = (data) => {
-  try {
-    fs.writeFileSync(fileLocation, JSON.stringify(data))
-  } catch (err) {
-    console.error("Couldn't save data", err)
-  }
-}
-
-
-const loadData = (fileLocation) => {
-  try {
-    return fs.readFileSync(fileLocation, 'utf8')
-  } catch (err) {
-    console.error(err)
-    return false
-  }
-}
 
 let mainWindow;
+let fileLocation = app.getPath(
+  'userData') + "\\" + "user-settings" + ".json";
 
 const createWindow = () => {
   // Create the browser window.
@@ -73,6 +44,10 @@ const createWindow = () => {
   })
 
   log.info("Application started")
+  mainWindow.webContents.on('dom-ready', () => {
+    mainWindow.webContents.send('settings:get', loadData(fileLocation))
+    notificationPreference = loadData.notifications
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -81,16 +56,13 @@ const createWindow = () => {
 
 
 // This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
+// initialisation and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
 
-  // mainWindow.webContents.on('dom-ready', () => {
-  //   mainWindow.webContents.send('settings:get', loadData(fileLocation))
-  // })
 
-  // log.info(store.get('settings'))
+  console.log("Settings loaded: ", loadData())
 }
 
 
@@ -152,19 +124,43 @@ const showNotification = () => {
 }
 
 ipcMain.on('notificationPrompt', () => {
-  // if (loadData(fileLocation)[0] === true) {
-  showNotification()
-  console.log("Notifications enabled")
-  // } else {
-  //   console.log("Notifications disabled")
-  // }
+  if (notificationPreference === true) {
+    showNotification()
+    console.log("Notifications enabled")
+  } else {
+    console.log("Notifications disabled")
+  }
 
   log.info("Application minimised")
 })
 
-// Update user settings
-ipcMain.on('settings:set', (data) => {
-  storeData(data)
-  // mainWindow.webContents.send('settings:get', store.get('settings'))
-  console.log("Update user settings to: ", data)
+let notificationPreference;
+const loadData = (fileLocation) => {
+  console.log(fileLocation)
+
+  const defaults = {
+    "notifications": true,
+    "theme": "Light"
+  }
+  try {
+    return fs.readFileSync(fileLocation, 'utf8')
+  } catch (err) {
+    console.error("Couldn't load data", err)
+    return defaults
+  }
+}
+
+const storeData = (fileLocation, data) => {
+  console.log(data)
+  try {
+    fs.writeFileSync(fileLocation, JSON.stringify(data))
+  } catch (err) {
+    console.error("Couldn't save data", data, err)
+  }
+}
+
+ipcMain.on('settings:set', (e, data) => {
+  storeData(fileLocation, data)
+  mainWindow.webContents.send('settings:get', loadData(fileLocation))
 })
+

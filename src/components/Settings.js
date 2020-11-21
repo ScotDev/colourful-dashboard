@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Toggle from 'react-toggle';
 import { ToastProvider, useToasts } from 'react-toast-notifications'
+import { connect } from 'react-redux';
 
 const log = require('electron-log')
 
@@ -12,7 +13,6 @@ const os = require("os");
 const fs = require('fs');
 
 import styled from 'styled-components';
-import { settings } from 'cluster';
 
 const Content = styled(motion.div)`
   height: 100vh;
@@ -70,23 +70,15 @@ font-size:1.25rem;
 margin-left:1rem;
 `
 
-
-export default function Settings() {
+function Settings(props) {
+    console.log(props)
     const { addToast } = useToasts()
 
     let initialPath = path.join(os.homedir(), "/Documents/Predict/Reports")
 
     const [outputPath, setOutputPath] = useState(null)
-    // This should be loaded from local json into redux and then into local state
     const [notificationPreference, setNotificationPreference] = useState(true)
     const [themePreference, setThemePreference] = useState(null)
-
-    // This should come through redux
-    // ipcRenderer.on('settings:get', (settings) => {
-    //     setNotificationPreference(settings.notifications)
-    //     setThemePreference(settings.theme)
-    //     console.log(settings)
-    // })
 
 
     // This does nothing right now
@@ -129,13 +121,14 @@ export default function Settings() {
         })
     }
 
+    // These two change handlers should be combined if possible
     const handleNotificationPreferenceChange = () => {
         if (notificationPreference === true) {
             setNotificationPreference(false)
         } else {
             setNotificationPreference(true)
         }
-        ipcRenderer.send('settings:set', ({ "notifications": notificationPreference }))
+        ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference }))
         addToast('Notifications preference saved successfully', { appearance: 'success' })
     }
 
@@ -146,20 +139,27 @@ export default function Settings() {
             setThemePreference("Light")
         }
 
-        // ipcRenderer.send('settings:set', ({ "theme": themePreference })
-        // )
+        ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference })
+        )
 
-        // addToast('Theme preference saved successfully', { appearance: 'success' })
+        addToast('Theme preference saved successfully', { appearance: 'success' })
 
     }
 
+    // ipcRenderer.on('settings:get', (e, settings) => {
+    //     // setNotificationPreference(settings.notifications)
+    //     // setThemePreference(settings.theme)
+    //     console.log("Received settings in component:", settings, settings.notifications, settings["theme"])
+    // })
 
-    // Component state doesn't persist on navigation, I guess this is fine if I can write to redux store/save config to json before navigating away
+
 
     // Is mounted workaround not recommeneded and doesn't seem to work. Redux may fix this by removing component level state altogether
     useEffect(() => {
-        console.log("UseEffect ran")
+
         let isMounted = true;
+
+
 
         if (isMounted) {
             setOutputPath(initialPath)
@@ -216,3 +216,12 @@ export default function Settings() {
         </Content>
     )
 }
+
+
+const mapStateToProps = state => {
+    return {
+        settings: state.settings
+    }
+}
+
+export default connect(mapStateToProps)(Settings);

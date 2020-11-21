@@ -13,32 +13,26 @@
  *
  * To enable Node.js integration in this file, open up `main.js` and enable the `nodeIntegration`
  * flag:
- *
- * ```
- *  // Create the browser window.
-//  *  mainWindow = new BrowserWindow({
-//  *    width: 800,
-//  *    height: 600,
-//  *    webPreferences: {
-//  *      nodeIntegration: true
-//  *    }
-//  *  });
- * ```
+
  */
 
 
 // const { ipcRenderer } = require('electron')
 
 import React from 'react';
-
 import ReactDOM from 'react-dom'
 import App from './App'
-
-
+// Necessary for some global styles
 import './index.css';
 
-ReactDOM.render(
-    <React.StrictMode><App /></React.StrictMode>, document.getElementById('root'));
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+// Might need path adjustment when built
+import rootReducer from './reducers/rootReducer'
+
+const store = createStore(rootReducer);
+
+ReactDOM.render(<React.StrictMode> <Provider store={store}> <App /></Provider></React.StrictMode>, document.getElementById('root'));
 
 
 
