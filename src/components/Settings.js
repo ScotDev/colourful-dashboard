@@ -117,6 +117,7 @@ function Settings(props) {
 
 
 
+
     // ipcRenderer.send('settings:update', props.settings)
 
 

@@ -20,6 +20,8 @@ let mainWindow;
 // let settingsFilePath = app.getPath(
 //   'userData') + "\\" + "user-settings" + ".json";
 let settingsFilePath = path.join(os.homedir(), "/Documents/Predict");
+const defaults = JSON.stringify({ "settings": [{ "name": "notifications", "value": true }, { "name": "lightTheme", "value": true }, { "name": "reportOutputPath", "value": settingsFilePath + "/Reports" }] })
+
 
 const createWindow = () => {
   // Create the browser window.
@@ -48,9 +50,10 @@ const createWindow = () => {
   })
 
   log.info("Application started")
-  // mainWindow.webContents.on('dom-ready', () => {
-  //   mainWindow.webContents.send('settings:get', loadData(fileLocation))
-  // })
+  mainWindow.webContents.on("dom-ready", (e) => {
+    mainWindow.webContents.send("settings:load")
+    console.log("Settings loaded from file on dom-ready: ")
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -61,7 +64,9 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-  // console.log("Settings loaded: ", loadData())
+  // mainWindow.webContents.send("settings:load", checkConfigDirectoryForLoad(defaults))
+  // console.log("Settings loaded from file on ready: ", checkConfigDirectoryForLoad(defaults))
+  // console.log(loadSettingsFromFile())
 }
 
 );
@@ -127,48 +132,61 @@ ipcMain.on('notificationPrompt', () => {
 })
 
 
-// const loadData = (fileLocation) => {
-//   console.log(fileLocation)
+// const checkConfigDirectoryForLoad = (defaults) => {
 
-//   const defaults = {
-//     "notifications": true,
-//     "theme": "Light"
-//   }
-//   try {
-//     return fs.readFileSync(fileLocation, 'utf8')
-//   } catch (err) {
-//     console.error("Couldn't load data", err)
-//     return defaults
-//   }
+//   // If directory doesn't exists, create it.
+//   // Then create initial settings 
+//   fs.access(settingsFilePath, function (error) {
+//     if (error) {
+//       fs.mkdirSync(settingsFilePath)
+//       console.log("Directory created for first time")
+//       saveDataToFile(defaults)
+//       return defaults;
+//     } else {
+//       console.log("Directory already exists")
+//       loadDataFromFile();
+//     }
+//   })
 // }
 
-const checkConfigDirectory = (data) => {
-  // If directory doesn't exists, create it
+// const loadDataFromFile = () => {
+
+//   fs.readFile(settingsFilePath + "/userConfig.json", (err, data) => {
+//     if (err) {
+//       console.log(Err, "Error loading from file")
+//     }
+//     console.log("rawdata:", data)
+//     return data
+//   }
+//   )
+// }
+
+const checkConfigDirectoryForSave = (data) => {
+  // If directory doesn't exists, create it.
+  // Then save settings update
   fs.access(settingsFilePath, function (error) {
     if (error) {
       fs.mkdirSync(settingsFilePath)
       console.log("Directory created")
-      storeData(data)
+      saveDataToFile(data)
     } else {
       console.log("Directory exists")
-      storeData(data)
+      saveDataToFile(data)
     }
   })
 }
 
 
 // This doesn't quite make sense. Which function is checking what
-const storeData = (data) => {
+const saveDataToFile = (data) => {
   fs.writeFile(settingsFilePath + "/userConfig.json", JSON.stringify(data), function (err) {
     if (err) {
       log.error("Couldn't save data", data, err)
     };
     log.info("Config file updated")
   })
-
 }
 
 ipcMain.on('settings:update', (e, data) => {
-  checkConfigDirectory(data)
-  // mainWindow.webContents.send('settings:get', loadData(fileLocation))
+  checkConfigDirectoryForSave(data)
 })

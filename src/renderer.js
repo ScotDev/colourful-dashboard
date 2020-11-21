@@ -37,9 +37,12 @@ const store = createStore(rootReducer);
 // This should be at component level or elsewhere. Couldn't figure out how to access subscribe from component
 store.subscribe(() => {
     ipcRenderer.send('settings:update', store.getState())
-    console.log("Renderer says settings updated")
+    console.log("Renderer says settings updated:", store.getState())
 })
 
+// ipcRenderer.on("settings:load", (e, data) => {
+//     console.log("Settings received in renderer", data)
+// })
 
 
 ReactDOM.render(<React.StrictMode> <Provider store={store}> <App /></Provider></React.StrictMode>, document.getElementById('root'));
