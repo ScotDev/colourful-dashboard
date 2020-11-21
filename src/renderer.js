@@ -25,12 +25,22 @@ import App from './App'
 // Necessary for some global styles
 import './index.css';
 
+import { ipcRenderer } from 'electron';
+
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 // Might need path adjustment when built
 import rootReducer from './reducers/rootReducer'
 
 const store = createStore(rootReducer);
+
+// This should be at component level or elsewhere. Couldn't figure out how to access subscribe from component
+store.subscribe(() => {
+    ipcRenderer.send('settings:update', store.getState())
+    console.log("Renderer says settings updated")
+})
+
+
 
 ReactDOM.render(<React.StrictMode> <Provider store={store}> <App /></Provider></React.StrictMode>, document.getElementById('root'));
 

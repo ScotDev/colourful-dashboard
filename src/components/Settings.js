@@ -73,11 +73,6 @@ margin-left:1rem;
 function Settings(props) {
     const { addToast } = useToasts()
 
-    let initialPath = path.join(os.homedir(), "/Documents/Predict/Reports")
-
-    const [outputPath, setOutputPath] = useState(null)
-
-
     // This does nothing right now
     const chooseOutputDirectory = () => {
         remote.dialog.showSaveDialog(null, {
@@ -105,7 +100,7 @@ function Settings(props) {
         fs.access(props.settings[2].value, function (error) {
             if (error) {
                 // Why did I comment this out
-                // fs.mkdirSync(outputPath)
+                fs.mkdirSync(props.settings[2].value)
                 chooseOutputDirectory()
                 console.log("Directory does not exist.")
             } else {
@@ -115,22 +110,14 @@ function Settings(props) {
         })
     }
 
-
     const handleSettingChange = (e) => {
-
-        // ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference }))
-
         props.updateSettings(e.target.name, e.target.checked)
-
         addToast('Preference saved successfully', { appearance: 'success' })
     }
 
 
-    // ipcRenderer.on('settings:get', (e, settings) => {
-    //     // setNotificationPreference(settings.notifications)
-    //     // setThemePreference(settings.theme)
-    //     console.log("Received settings in component:", settings, settings.notifications, settings["theme"])
-    // })
+
+    // ipcRenderer.send('settings:update', props.settings)
 
 
     return (
@@ -185,12 +172,10 @@ const mapStateToProps = state => {
     }
 }
 
-
 const mapDispatchToProps = (dispatch) => {
     return {
         updateSettings: (settingName, settingValue) => { dispatch({ type: "UPDATE_SETTING", payload: { settingName, settingValue } }) }
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

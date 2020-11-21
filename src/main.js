@@ -2,6 +2,7 @@
 const { app, BrowserWindow, ipcMain, Notification, dialog, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const os = require("os");
 const log = require('electron-log');
 
 // This might not work when built with webpack
@@ -14,8 +15,11 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 
 let mainWindow;
-let fileLocation = app.getPath(
-  'userData') + "\\" + "user-settings" + ".json";
+
+// From Traversy Electron Udemy course. Buggy for whatever reason.
+// let settingsFilePath = app.getPath(
+//   'userData') + "\\" + "user-settings" + ".json";
+let settingsFilePath = path.join(os.homedir(), "/Documents/Predict");
 
 const createWindow = () => {
   // Create the browser window.
@@ -44,27 +48,21 @@ const createWindow = () => {
   })
 
   log.info("Application started")
-  mainWindow.webContents.on('dom-ready', () => {
-    mainWindow.webContents.send('settings:get', loadData(fileLocation))
-    notificationPreference = loadData.notifications
-  })
+  // mainWindow.webContents.on('dom-ready', () => {
+  //   mainWindow.webContents.send('settings:get', loadData(fileLocation))
+  // })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
-
-
 
 // This method will be called when Electron has finished
 // initialisation and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-
-
-  console.log("Settings loaded: ", loadData())
+  // console.log("Settings loaded: ", loadData())
 }
-
 
 );
 
@@ -129,32 +127,48 @@ ipcMain.on('notificationPrompt', () => {
 })
 
 
-const loadData = (fileLocation) => {
-  console.log(fileLocation)
+// const loadData = (fileLocation) => {
+//   console.log(fileLocation)
 
-  const defaults = {
-    "notifications": true,
-    "theme": "Light"
-  }
-  try {
-    return fs.readFileSync(fileLocation, 'utf8')
-  } catch (err) {
-    console.error("Couldn't load data", err)
-    return defaults
-  }
+//   const defaults = {
+//     "notifications": true,
+//     "theme": "Light"
+//   }
+//   try {
+//     return fs.readFileSync(fileLocation, 'utf8')
+//   } catch (err) {
+//     console.error("Couldn't load data", err)
+//     return defaults
+//   }
+// }
+
+const checkConfigDirectory = (data) => {
+  // If directory doesn't exists, create it
+  fs.access(settingsFilePath, function (error) {
+    if (error) {
+      fs.mkdirSync(settingsFilePath)
+      console.log("Directory created")
+      storeData(data)
+    } else {
+      console.log("Directory exists")
+      storeData(data)
+    }
+  })
 }
 
-const storeData = (fileLocation, data) => {
-  console.log(data)
-  try {
-    fs.writeFileSync(fileLocation, JSON.stringify(data))
-  } catch (err) {
-    console.error("Couldn't save data", data, err)
-  }
+
+// This doesn't quite make sense. Which function is checking what
+const storeData = (data) => {
+  fs.writeFile(settingsFilePath + "/userConfig.json", JSON.stringify(data), function (err) {
+    if (err) {
+      log.error("Couldn't save data", data, err)
+    };
+    log.info("Config file updated")
+  })
+
 }
 
-ipcMain.on('settings:set', (e, data) => {
-  storeData(fileLocation, data)
-  mainWindow.webContents.send('settings:get', loadData(fileLocation))
+ipcMain.on('settings:update', (e, data) => {
+  checkConfigDirectory(data)
+  // mainWindow.webContents.send('settings:get', loadData(fileLocation))
 })
-
