@@ -4,6 +4,7 @@ const remote = require('electron').remote
 import { ipcRenderer } from 'electron'
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { connect } from 'react-redux';
 
 const currentUser = process.env.username;
 
@@ -120,8 +121,16 @@ background-color: transparent;
 `
 
 
+function Navbar(props) {
 
-export default function Navbar() {
+  const handleMinimise = () => {
+    console.log(props.settings[0].value)
+    if (props.settings[0].value) {
+      ipcRenderer.send('notificationPrompt')
+    } else {
+      console.log("Notifications disabled")
+    }
+  }
 
   useEffect(() => {
     if (document) {
@@ -167,7 +176,7 @@ export default function Navbar() {
           </NavItem>
           <AppActionsmenu>
             <MaximiseButton id="maximizeBtn" src={maximiseIcon}></MaximiseButton>
-            <MinimiseButton id="minimizeBtn" src={minimiseIcon} onClick={() => ipcRenderer.send('notificationPrompt')}></MinimiseButton>
+            <MinimiseButton id="minimizeBtn" src={minimiseIcon} onClick={() => handleMinimise()}></MinimiseButton>
             <QuitButton id="quitBtn" src={quitIcon} onClick={() => ipcRenderer.send('quit')}></QuitButton>
           </AppActionsmenu>
         </NavMenu>
@@ -178,3 +187,11 @@ export default function Navbar() {
     </MemoryRouter>
   )
 }
+
+const mapStateToProps = state => {
+  return {
+    settings: state.settings
+  }
+}
+
+export default connect(mapStateToProps)(Navbar);

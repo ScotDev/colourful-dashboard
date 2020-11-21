@@ -124,17 +124,11 @@ const showNotification = () => {
 }
 
 ipcMain.on('notificationPrompt', () => {
-  if (notificationPreference === true) {
-    showNotification()
-    console.log("Notifications enabled")
-  } else {
-    console.log("Notifications disabled")
-  }
-
-  log.info("Application minimised")
+  showNotification()
+  log.info("Application minimised by user")
 })
 
-let notificationPreference;
+
 const loadData = (fileLocation) => {
   console.log(fileLocation)
 

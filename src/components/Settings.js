@@ -71,7 +71,6 @@ margin-left:1rem;
 `
 
 function Settings(props) {
-    console.log(props)
     const { addToast } = useToasts()
 
     let initialPath = path.join(os.homedir(), "/Documents/Predict/Reports")
@@ -81,34 +80,31 @@ function Settings(props) {
 
     // This does nothing right now
     const chooseOutputDirectory = () => {
-
         remote.dialog.showSaveDialog(null, {
-            title: "Change output folder", defaultPath: outputPath, filters: [
+            title: "Change output folder", defaultPath: props.settings[2].value, filters: [
             ]
         }).then(res => {
             if (res.canceled) {
-                console.log("Dialog canceled")
+                log.info("User canceled save dialogue")
             } else {
-                // outputPath = res.filePath;
-                setOutputPath(res.filePath);
+                props.updateSettings("reportOutputPath", res.filePath)
             }
 
         }).catch(err => {
             console.log(err)
             dialog.showMessageBox(null, { title: "Folder selection error", message: "Error selecting folder, please try again", noLink: true })
                 .then(res => {
-                    console.log(res)
+                    log.error("Error saving folder path", res)
                 }).catch(err => {
-                    console.log(err)
+                    log.error("Error saving folder path", err)
                 })
         })
-
-        console.log(outputPath)
     }
     const checkOutputDirectory = () => {
 
-        fs.access(outputPath, function (error) {
+        fs.access(props.settings[2].value, function (error) {
             if (error) {
+                // Why did I comment this out
                 // fs.mkdirSync(outputPath)
                 chooseOutputDirectory()
                 console.log("Directory does not exist.")
@@ -137,21 +133,6 @@ function Settings(props) {
     // })
 
 
-
-    // Is mounted workaround not recommeneded and doesn't seem to work. Redux may fix this by removing component level state altogether
-    useEffect(() => {
-        let isMounted = true;
-
-        if (isMounted) {
-            setOutputPath(initialPath)
-        }
-        return () => {
-            console.log("Cleanup ran")
-            isMounted = false;
-        }
-    }, [])
-
-
     return (
         <Content initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <PageTitle>User preferences</PageTitle>
@@ -172,7 +153,7 @@ function Settings(props) {
 
 
             <SectionTitle>Output directory</SectionTitle>
-            <SectionText>{outputPath}</SectionText>
+            <SectionText>{props.settings[2].value}</SectionText>
             <SelectionBtn initial={{ y: 0 }} whileHover={{ y: -2, origin: 0, boxShadow: "0 8px 16px 0 rgba(0,0,0,0.6)", cursor: "pointer" }} transition={{
                 duration: 0.1,
                 type: "Inertia",
@@ -189,7 +170,6 @@ function Settings(props) {
                     onChange={(e) => handleSettingChange(e)}
                 />
                 <OptionLabel htmlFor='notification-preference'>{props.settings[0].value ? "On" : "Off"}</OptionLabel>
-                <OptionLabel htmlFor='notification-preference'>{props.settings[0].name}</OptionLabel>
             </OptionGroup>
 
             <Divider></Divider>

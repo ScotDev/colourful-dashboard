@@ -1,5 +1,8 @@
+const path = require('path');
+const os = require("os");
+
 const initialState = {
-    settings: [{ name: "notifications", value: true }, { name: "lightTheme", value: true }]
+    settings: [{ name: "notifications", value: true }, { name: "lightTheme", value: true }, { name: "reportOutputPath", value: path.join(os.homedir(), "/Documents/Predict/Reports") }]
 }
 
 const rootReducer = (state = initialState, action) => {
