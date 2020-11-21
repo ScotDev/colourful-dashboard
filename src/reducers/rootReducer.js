@@ -1,5 +1,5 @@
 const initialState = {
-    settings: [{ notifications: true }, { theme: 0 }]
+    settings: [{ notifications: true }, { lightTheme: 0 }]
 }
 
 const rootReducer = (state = initialState, action) => {

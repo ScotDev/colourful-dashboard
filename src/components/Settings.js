@@ -77,8 +77,8 @@ function Settings(props) {
     let initialPath = path.join(os.homedir(), "/Documents/Predict/Reports")
 
     const [outputPath, setOutputPath] = useState(null)
-    const [notificationPreference, setNotificationPreference] = useState(true)
-    const [themePreference, setThemePreference] = useState(null)
+    // const [notificationPreference, setNotificationPreference] = useState(true)
+    // const [themePreference, setThemePreference] = useState(null)
 
 
     // This does nothing right now
@@ -130,7 +130,7 @@ function Settings(props) {
         // }
         // ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference }))
 
-        // props.updateSettings(e.target.name, e.target.name)
+        props.updateSettings(e.target.name, e.target.name)
         console.log(e.target.checked)
 
         addToast('Notifications preference saved successfully', { appearance: 'success' })
