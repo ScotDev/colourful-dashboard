@@ -77,8 +77,6 @@ function Settings(props) {
     let initialPath = path.join(os.homedir(), "/Documents/Predict/Reports")
 
     const [outputPath, setOutputPath] = useState(null)
-    // const [notificationPreference, setNotificationPreference] = useState(true)
-    // const [themePreference, setThemePreference] = useState(null)
 
 
     // This does nothing right now
@@ -121,35 +119,16 @@ function Settings(props) {
         })
     }
 
-    // These two change handlers should be combined if possible
-    const handleNotificationPreferenceChange = (e) => {
-        // if (notificationPreference === true) {
-        //     setNotificationPreference(false)
-        // } else {
-        //     setNotificationPreference(true)
-        // }
+
+    const handleSettingChange = (e) => {
+
         // ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference }))
 
-        props.updateSettings(e.target.name, e.target.name)
-        console.log(e.target.checked)
+        props.updateSettings(e.target.name, e.target.checked)
 
-        addToast('Notifications preference saved successfully', { appearance: 'success' })
+        addToast('Preference saved successfully', { appearance: 'success' })
     }
 
-    const handleThemePreferenceChange = (e) => {
-        if (themePreference === "Light") {
-            setThemePreference("Dark")
-        } else {
-            setThemePreference("Light")
-        }
-
-        // ipcRenderer.send('settings:set', ({ "theme": themePreference, "notifications": notificationPreference })
-        // )
-        // console.log(e.target.checked)
-
-        addToast('Theme preference saved successfully', { appearance: 'success' })
-
-    }
 
     // ipcRenderer.on('settings:get', (e, settings) => {
     //     // setNotificationPreference(settings.notifications)
@@ -183,12 +162,12 @@ function Settings(props) {
                 <Toggle
                     icons={false}
                     id='theme-preference'
-                    name="theme"
+                    name="lightTheme"
                     className="theme-toggle"
-                    defaultChecked={themePreference === "Light" ? 0 : 1}
-                    onChange={(e) => handleThemePreferenceChange(e)}
+                    defaultChecked={props.settings[1].value}
+                    onChange={(e) => handleSettingChange(e)}
                 />
-                <OptionLabel htmlFor='theme-preference'>{themePreference}</OptionLabel>
+                <OptionLabel htmlFor='theme-preference'>{props.settings[1].value ? "Light" : "Dark"}</OptionLabel>
             </OptionGroup>
 
 
@@ -201,19 +180,16 @@ function Settings(props) {
             }} onClick={() => { checkOutputDirectory() }}>Browse...</SelectionBtn>
 
             <SectionTitle>Notifications</SectionTitle>
-            {/* <OptionGroup>
-                <Toggle name="notifications" id="notifications" type="checkbox"></Toggle>
-                <OptionLabel htmlFor="notifications">On</OptionLabel>
-            </OptionGroup> */}
+
             <OptionGroup>
                 <Toggle
                     id='notification-preference'
                     name="notifications"
-                    defaultChecked={props.settings[0].notifications}
-                    onChange={(e) => handleNotificationPreferenceChange(e)}
+                    defaultChecked={props.settings[0].value}
+                    onChange={(e) => handleSettingChange(e)}
                 />
-                <OptionLabel htmlFor='notification-preference'>{props.settings[0].notifications ? "On" : "Off"}</OptionLabel>
-                <OptionLabel htmlFor='notification-preference'>{props.settings[0].notifications.toString()}</OptionLabel>
+                <OptionLabel htmlFor='notification-preference'>{props.settings[0].value ? "On" : "Off"}</OptionLabel>
+                <OptionLabel htmlFor='notification-preference'>{props.settings[0].name}</OptionLabel>
             </OptionGroup>
 
             <Divider></Divider>
@@ -229,12 +205,12 @@ const mapStateToProps = state => {
     }
 }
 
+
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateSettings: (settingName, settingContent) => { dispatch({ type: UPDATE_SETTING, settingName: settingName, settingContent: settingContent }) }
+        updateSettings: (settingName, settingValue) => { dispatch({ type: "UPDATE_SETTING", payload: { settingName, settingValue } }) }
     }
 }
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);
