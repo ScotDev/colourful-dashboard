@@ -40,11 +40,6 @@ store.subscribe(() => {
     console.log("Renderer says settings updated:", store.getState())
 })
 
-// ipcRenderer.on("settings:load", (e, data) => {
-//     console.log("Settings received in renderer", data)
-// })
-
-
 ReactDOM.render(<React.StrictMode> <Provider store={store}> <App /></Provider></React.StrictMode>, document.getElementById('root'));
 
 

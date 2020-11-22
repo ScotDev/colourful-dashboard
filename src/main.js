@@ -52,7 +52,6 @@ const createWindow = () => {
   log.info("Application started")
   mainWindow.webContents.on("dom-ready", (e) => {
     mainWindow.webContents.send("settings:load")
-    console.log("Settings loaded from file on dom-ready: ")
   })
 
   // Open the DevTools.
@@ -170,7 +169,7 @@ const checkConfigDirectoryForSave = (data) => {
       console.log("Directory created")
       saveDataToFile(data)
     } else {
-      console.log("Directory exists")
+      console.log("Directory exists (main.js)")
       saveDataToFile(data)
     }
   })

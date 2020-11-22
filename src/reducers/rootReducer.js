@@ -1,62 +1,53 @@
 const path = require('path');
 const os = require("os");
 const fs = require('fs');
+const log = require('electron-log')
 
-import { ipcRenderer } from 'electron';
-
-let settingsFilePath = path.join(os.homedir(), "/Documents/Predict");
+// Poorly named, rename
+const settingsFilePath = path.join(os.homedir(), "/Documents/Predict");
 const defaultPath = path.join(settingsFilePath, "userConfig.json");
 
-const defaults = JSON.stringify({ "settings": [{ "name": "notifications", "value": true }, { "name": "lightTheme", "value": true }, { "name": "reportOutputPath", "value": settingsFilePath + "/Reports" }] })
-
-ipcRenderer.on("settings:load", (e) => {
-    checkConfigDirectoryForLoad()
-})
-
+const defaults = { "settings": [{ "name": "notifications", "value": true }, { "name": "lightTheme", "value": true }, { "name": "reportOutputPath", "value": settingsFilePath + "/Reports" }] }
 
 const checkConfigDirectoryForLoad = (defaults) => {
     // If directory doesn't exists, create it.
     // Then create initial settings 
-    fs.access(settingsFilePath, function (error) {
-        if (error) {
-            fs.mkdirSync(settingsFilePath)
-            console.log("Directory created for first time")
-            saveDataToFile(defaults)
-            return defaults;
-        } else {
-            console.log("Directory already exists")
-            loadDataFromFile();
-        }
-    })
+    try {
+        fs.existsSync(defaultPath)
+        console.log("Path already exists (reducer.js)")
+        return loadDataFromFile();
+    } catch (error) {
+        // fs.mkdirSync(settingsFilePath)
+        console.log("Path created for first time")
+        saveDataToFile(defaults)
+        return defaults;
+    }
 }
 
 const loadDataFromFile = () => {
-    fs.readFile(defaultPath, (err, data) => {
-        if (err) {
-            console.log(Err, "Error loading from file")
-        }
-        console.log("rawdata:", JSON.parse(data))
+    // File exists so load data from file
+    // If file can't be read (file content)
+    // Then return default settings
+    try {
+        const data = fs.readFileSync(defaultPath, 'utf-8')
         return JSON.parse(data);
+    } catch (error) {
+        log.error(error)
+        saveDataToFile(defaults)
+        return defaults;
     }
-    )
 }
 
 const saveDataToFile = (data) => {
-    fs.writeFile(defaultPath, JSON.stringify(data), function (err) {
-        if (err) {
-            log.error("Couldn't save data", data, err)
-        };
+    try {
+        fs.writeFileSync(defaultPath, JSON.stringify(data))
         log.info("Config file updated")
-    })
+    } catch (error) {
+        log.error("Couldn't save data", data, error)
+    }
 }
 
-
-
-// const initialState = {
-//     settings: [{ name: "notifications", value: true }, { name: "lightTheme", value: true }, { name: "reportOutputPath", value: path.join(os.homedir(), "/Documents/Predict/Reports") }]
-// }
-
-// const initialState = 
+const initialState = checkConfigDirectoryForLoad(defaults)
 
 const rootReducer = (state = initialState, action) => {
     if (action.type === "UPDATE_SETTING") {
@@ -69,23 +60,15 @@ const rootReducer = (state = initialState, action) => {
                 if (setting.name !== action.payload.settingName) {
                     return setting
                 }
-
                 return {
                     ...setting,
                     value: action.payload.settingValue
                 }
             })
-
-
         }
-
     }
     return state;
 }
 
 
 export default rootReducer;
-
-
-
-

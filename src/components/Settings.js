@@ -99,7 +99,6 @@ function Settings(props) {
 
         fs.access(props.settings[2].value, function (error) {
             if (error) {
-                // Why did I comment this out
                 fs.mkdirSync(props.settings[2].value)
                 chooseOutputDirectory()
                 console.log("Directory does not exist.")
@@ -114,12 +113,6 @@ function Settings(props) {
         props.updateSettings(e.target.name, e.target.checked)
         addToast('Preference saved successfully', { appearance: 'success' })
     }
-
-
-
-
-    // ipcRenderer.send('settings:update', props.settings)
-
 
     return (
         <Content initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
