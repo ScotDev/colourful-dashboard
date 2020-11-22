@@ -17,7 +17,6 @@ const checkConfigDirectoryForLoad = (defaults) => {
         console.log("Path already exists (reducer.js)")
         return loadDataFromFile();
     } catch (error) {
-        // fs.mkdirSync(settingsFilePath)
         console.log("Path created for first time")
         saveDataToFile(defaults)
         return defaults;

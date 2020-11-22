@@ -26,7 +26,7 @@ const defaults = JSON.stringify({ "settings": [{ "name": "notifications", "value
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1600,
+    width: 1650,
     height: 1000,
     title: "Dashboard",
     backgroundColor: '#D15438',
@@ -63,9 +63,6 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-  // mainWindow.webContents.send("settings:load", checkConfigDirectoryForLoad(defaults))
-  // console.log("Settings loaded from file on ready: ", checkConfigDirectoryForLoad(defaults))
-  // console.log(loadSettingsFromFile())
 }
 
 );
@@ -130,35 +127,6 @@ ipcMain.on('notificationPrompt', () => {
   log.info("Application minimised by user")
 })
 
-
-// const checkConfigDirectoryForLoad = (defaults) => {
-
-//   // If directory doesn't exists, create it.
-//   // Then create initial settings 
-//   fs.access(settingsFilePath, function (error) {
-//     if (error) {
-//       fs.mkdirSync(settingsFilePath)
-//       console.log("Directory created for first time")
-//       saveDataToFile(defaults)
-//       return defaults;
-//     } else {
-//       console.log("Directory already exists")
-//       loadDataFromFile();
-//     }
-//   })
-// }
-
-// const loadDataFromFile = () => {
-
-//   fs.readFile(settingsFilePath + "/userConfig.json", (err, data) => {
-//     if (err) {
-//       console.log(Err, "Error loading from file")
-//     }
-//     console.log("rawdata:", data)
-//     return data
-//   }
-//   )
-// }
 
 const checkConfigDirectoryForSave = (data) => {
   // If directory doesn't exists, create it.

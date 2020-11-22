@@ -15,6 +15,7 @@ import minimiseIcon from '../static/images/minimize.svg'
 
 import Dashboard from './Dashboard'
 import Settings from './Settings';
+import Help from './Help';
 
 const StyledNavbar = styled(motion.nav)`
   padding: 0.5rem 2rem;
@@ -53,9 +54,7 @@ const NavMenu = styled.ul`
   margin: 0 1rem 0 auto;
   list-style-type: none;
   -webkit-app-region: no-drag;
-
   `
-
 const NavItem = styled.li`
   padding: 0 0.75rem;
   -webkit-app-region: no-drag;
@@ -65,10 +64,6 @@ const NavStyledLink = styled.p`
 &:hover, &:focus{
   border-bottom: 2px solid white;
 }
-
-/* &:active{
-  border-bottom: 2px solid white;
-} */
 
 border-bottom:2px solid;
 border-color: ${props => props.active ? "white" : "transparent"};
@@ -167,12 +162,14 @@ function Navbar(props) {
           </NavItem>
           <NavItem>
             <NavStyledLink>
-              <NavLink to="/settings" >Settings</NavLink>
+              <NavLink to="/settings">Settings</NavLink>
             </NavStyledLink>
 
           </NavItem>
           <NavItem>
-            <NavStyledLink>Help</NavStyledLink>
+            <NavStyledLink>
+              <NavLink to="/help">Help</NavLink>
+            </NavStyledLink>
           </NavItem>
           <AppActionsmenu>
             <MaximiseButton id="maximizeBtn" src={maximiseIcon}></MaximiseButton>
@@ -182,8 +179,9 @@ function Navbar(props) {
         </NavMenu>
       </StyledNavbar>
 
-      <Route exact path="/Dashboard" component={Dashboard} />
+      <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/settings" component={Settings} />
+      <Route exact path="/help" component={Help} />
     </MemoryRouter>
   )
 }

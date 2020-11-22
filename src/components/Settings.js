@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Toggle from 'react-toggle';
 import { ToastProvider, useToasts } from 'react-toast-notifications'
@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 
 const log = require('electron-log')
 
-import { dialog, remote, ipcRenderer } from 'electron';
+import { dialog, remote } from 'electron';
 
-const path = require('path');
-const os = require("os");
+// const path = require('path');
+// const os = require("os");
 const fs = require('fs');
 
 import styled from 'styled-components';

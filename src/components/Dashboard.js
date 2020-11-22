@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import AWS from 'aws-sdk';
+
 import styled from 'styled-components';
 
 import Welcome from './functional/DataCards/Welcome'
@@ -33,6 +35,7 @@ export default function Dashboard() {
 
 
 
+
     return (
         <Content initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <DashboardGrid>
@@ -45,3 +48,5 @@ export default function Dashboard() {
         </Content>
     )
 }
+
+// , accessKeyId: "AKIAUWQNFLFYQO6MDGSI", secretAccessKey: "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"
