@@ -30,8 +30,21 @@ const DashboardGrid = styled.div`
   padding: 1rem
 `
 
+const forecastqueryservice = new AWS.ForecastQueryService({
+    region: "eu-west-1", accessKeyId: "", secretAccessKey: ""
+});
+
+// "22722"
 
 export default function Dashboard() {
+
+    const getForecast = (Arn, SKU) => {
+        forecastqueryservice.queryForecast({ ForecastArn: Arn, Filters: { "item_id": SKU } }, function (err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else console.log(data);           // successful response
+        });
+    }
+
 
 
 
@@ -43,10 +56,9 @@ export default function Dashboard() {
                 <Large title="Inventory Value"></Large>
                 <Basic title="Total Inventory" chartImg={img1} ></Basic>
                 <Detailed title="Popular Products" chartImg={img2}></Detailed>
+                <button onClick={() => { getForecast("", "22722") }}>Get forecast</button>
 
             </DashboardGrid>
         </Content>
     )
 }
-
-// , accessKeyId: "AKIAUWQNFLFYQO6MDGSI", secretAccessKey: "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"
