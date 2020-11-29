@@ -7,7 +7,7 @@ const log = require('electron-log')
 const settingsFilePath = path.join(os.homedir(), "/Documents/Predict");
 const defaultPath = path.join(settingsFilePath, "userConfig.json");
 
-const defaults = { "settings": [{ "name": "notifications", "value": true }, { "name": "lightTheme", "value": true }, { "name": "reportOutputPath", "value": settingsFilePath + "/Reports" }] }
+const defaults = [{ "name": "notifications", "value": true }, { "name": "lightTheme", "value": true }, { "name": "reportOutputPath", "value": settingsFilePath + "/Reports" }]
 
 const checkConfigDirectoryForLoad = (defaults) => {
     // If directory doesn't exists, create it.
@@ -46,11 +46,13 @@ const saveDataToFile = (data) => {
     }
 }
 
-const initialState = checkConfigDirectoryForLoad(defaults)
+const initialState = {
+    settings: checkConfigDirectoryForLoad(defaults),
+    API_data: [{}]
+}
 
 const rootReducer = (state = initialState, action) => {
     if (action.type === "UPDATE_SETTING") {
-
         console.log("State is: ", state)
         console.log("Action is: ", action)
         return {
@@ -66,6 +68,17 @@ const rootReducer = (state = initialState, action) => {
             })
         }
     }
+    if (action.type === "UPDATE_API_DATA") {
+        console.log("State is: ", state)
+        console.log("Action is: ", action)
+        return {
+            ...state,
+            // This overwrites all the data, better to spread copy and add to
+            API_data: action.payload
+        }
+    }
+
+
     return state;
 }
 

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+
+import { connect } from 'react-redux';
 
 import AWS from 'aws-sdk';
 
@@ -8,7 +10,7 @@ import styled from 'styled-components';
 import Welcome from './functional/DataCards/Welcome'
 import Basic from './functional/DataCards/Basic'
 import Detailed from './functional/DataCards/Detailed'
-import Large from './functional/DataCards/Large'
+import LargeDataCard from './functional/DataCards/Large';
 
 import img1 from '../static/images/chart_example.svg'
 import img2 from '../static/images/chart_example2.svg'
@@ -36,15 +38,17 @@ const forecastqueryservice = new AWS.ForecastQueryService({
 
 // "22722"
 
-export default function Dashboard() {
+function Dashboard(props) {
 
     const getForecast = (Arn, SKU) => {
         forecastqueryservice.queryForecast({ ForecastArn: Arn, Filters: { "item_id": SKU } }, function (err, data) {
-            if (err) console.log(err, err.stack); // an error occurred
-            else console.log(data);           // successful response
+            if (err) { console.log(err, err.stack) } // an error occurred
+            else {
+                console.log(data);
+                props.updateAPIdata(data)
+            };        // successful response
         });
     }
-
 
 
 
@@ -53,7 +57,7 @@ export default function Dashboard() {
         <Content initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <DashboardGrid>
                 <Welcome></Welcome>
-                <Large title="Inventory Value"></Large>
+                <LargeDataCard title="Inventory Value"></LargeDataCard>
                 <Basic title="Total Inventory" chartImg={img1} ></Basic>
                 <Detailed title="Popular Products" chartImg={img2}></Detailed>
                 <button onClick={() => { getForecast("", "22722") }}>Get forecast</button>
@@ -62,3 +66,18 @@ export default function Dashboard() {
         </Content>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        API_data: state.API_data
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateAPIdata: (data) => { dispatch({ type: "UPDATE_API_DATA", payload: data }) }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

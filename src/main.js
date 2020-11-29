@@ -155,5 +155,5 @@ const saveDataToFile = (data) => {
 }
 
 ipcMain.on('settings:update', (e, data) => {
-  checkConfigDirectoryForSave(data)
+  checkConfigDirectoryForSave(data.settings)
 })

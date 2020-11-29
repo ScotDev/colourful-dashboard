@@ -72,6 +72,7 @@ margin-left:1rem;
 
 function Settings(props) {
     const { addToast } = useToasts()
+    console.log(props)
 
     // This does nothing right now
     const chooseOutputDirectory = () => {
