@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 
+import { Card } from '../../../ui-components/Card';
+
 import styled from 'styled-components';
 
 import Statistic from '../miniComponents/Statistic';
@@ -10,15 +12,6 @@ import ChartLegend from '../miniComponents/ChartLegend';
 
 import StatBreakdown from '../miniComponents/StatBreakdown';
 
-const Card = styled(motion.div)`
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    padding: 0.6rem 3rem 1rem 3rem;
-    min-height: 400px;
-    min-width: 600px;
-    overflow:hidden;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
-`
 const CardTitle = styled.h3`
     font-size:1.4rem;
     font-weight:400;
@@ -41,11 +34,6 @@ const ColumnRight = styled.div`
     flex-direction:column;
 `
 
-const Chart = styled.img`
-    max-height:180px;
-    max-width:180px;
-    margin: 0 1rem 3rem 0;
-`
 const Breakdown = styled.div`
     display:flex;
     flex-direction:column;
@@ -72,10 +60,10 @@ function LargeDataCard(props) {
             {
                 label: 'My First dataset',
                 fill: false,
-                lineTension: 0.1,
-                backgroundColor: 'rgba(75,192,192,0.4)',
+                lineTension: 0.2,
+                // backgroundColor: 'rgba(62, 67, 89, 1)',
                 borderColor: 'rgba(75,192,192,1)',
-                borderCapStyle: 'butt',
+                borderCapStyle: 'round',
                 borderDash: [],
                 borderDashOffset: 0.0,
                 borderJoinStyle: 'miter',
@@ -136,18 +124,41 @@ function LargeDataCard(props) {
 
     // console.log(props)
 
+    const options = {
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    zeroLineColor: "rgba(255, 255, 255, 1)",
+                    display: false,
+                    offsetGridLines: true
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    zeroLineColor: "rgba(255, 255, 255, 1)",
+                    display: false,
+                    offsetGridLines: true
+                }
+            }]
 
+        },
+        legend: {
+            labels: {
+                fontColor: "#fff"
+            }
+        }
+    }
 
 
     return (
-        <Card whileHover={{ scale: 1.01, origin: 0, boxShadow: "0 8px 16px 0 rgba(0,0,0,0.6)", cursor: "pointer" }} transition={{ type: "spring", stiffness: 100 }}>
+        <Card large>
             <CardTitle>{props.title}</CardTitle>
             <CardContent>
 
 
 
 
-                <Line data={!chartData ? dummyData : chartData} width={100} height={50}></Line>
+                <Line data={!chartData ? dummyData : chartData} width={100} height={50} options={options}></Line>
 
                 {/* <ColumnLeft> */}
                 {/* <Chart src={stats2.img}></Chart> */}

@@ -4,6 +4,8 @@ import Toggle from 'react-toggle';
 import { ToastProvider, useToasts } from 'react-toast-notifications'
 import { connect } from 'react-redux';
 
+import { StyledBtn } from '../ui-components/Btn';
+
 const log = require('electron-log')
 
 import { dialog, remote } from 'electron';
@@ -45,20 +47,6 @@ font-size:1.25rem;
 margin-bottom:0.5rem;
 `
 
-const SelectionBtn = styled(motion.button)`
-border-radius:10px;
-border: 1px solid #fff;
-color:#fff;
-background-color:#C73664;
-padding:0.5rem 1rem;
-margin: 0.5rem 0;
-font-size:1.25rem;
-box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
-
-&:hover, &:focus{
-    outline:none;
-}
-`
 const OptionGroup = styled.div`
 display:flex;
 align-items:center;
@@ -136,11 +124,7 @@ function Settings(props) {
 
             <SectionTitle>Output directory</SectionTitle>
             <SectionText>{props.settings[2].value}</SectionText>
-            <SelectionBtn initial={{ y: 0 }} whileHover={{ y: -2, origin: 0, boxShadow: "0 8px 16px 0 rgba(0,0,0,0.6)", cursor: "pointer" }} transition={{
-                duration: 0.1,
-                type: "Inertia",
-                stiffness: 500
-            }} onClick={() => { checkOutputDirectory() }}>Browse...</SelectionBtn>
+            <StyledBtn dark onClick={() => { checkOutputDirectory() }}>Browse...</StyledBtn>
 
             <SectionTitle>Notifications</SectionTitle>
 

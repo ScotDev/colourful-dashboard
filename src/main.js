@@ -29,7 +29,7 @@ const createWindow = () => {
     width: 1650,
     height: 1000,
     title: "Dashboard",
-    backgroundColor: '#D15438',
+    backgroundColor: '#171923',
     frame: false,
     show: false,
     webPreferences: {

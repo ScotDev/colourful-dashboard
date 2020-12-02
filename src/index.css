@@ -10,11 +10,11 @@
 body {
   overflow: hidden;
   color: white;
-  background-image: url('./static/images/bg.svg');
+  /* background-image: url('./static/images/bg.svg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
-  background-size: cover;
+  background-size: cover; */
 }
 
 a {
@@ -26,6 +26,7 @@ a {
   border-bottom: 2px solid white;
 }
 
+/* Required for react-toggle component on settings page */
 .react-toggle {
   touch-action: pan-x;
 
@@ -86,7 +87,8 @@ a {
   background-color: transparent;
 }
 .react-toggle--checked .react-toggle-track {
-  background-color: #19ab27;
+  /* background-color: #19ab27; */
+  background-color: #c73664;
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {

@@ -15,6 +15,8 @@ const StatTitle = styled.p`
 font-size:1rem;
 text-align:left;
 padding-bottom:0.25rem;
+color: #2a8da8;
+font-weight:500;
 `
 const StatNumber = styled.p`
 font-size:1.25rem;

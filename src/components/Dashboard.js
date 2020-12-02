@@ -60,7 +60,7 @@ function Dashboard(props) {
                 <LargeDataCard title="Inventory Value"></LargeDataCard>
                 <Basic title="Total Inventory" chartImg={img1} ></Basic>
                 <Detailed title="Popular Products" chartImg={img2}></Detailed>
-                <button onClick={() => { getForecast("", "22722") }}>Get forecast</button>
+                {/* <button onClick={() => { getForecast("", "22722") }}>Get forecast</button> */}
 
             </DashboardGrid>
         </Content>

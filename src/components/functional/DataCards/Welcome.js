@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
+import { StyledBtn } from '../../../ui-components/Btn';
 
 import styled from 'styled-components';
 
@@ -52,6 +53,7 @@ const Time = styled.p`
 font-size:2.5rem;
 font-weight:400;
 padding-top:2rem;
+margin-bottom:1rem;
 `
 
 const Date = styled.p`
@@ -103,6 +105,8 @@ export default function DataCard() {
                 <Month>{month}</Month>
                 <DayOfWeek>{dayOfWeek}</DayOfWeek>
                 <Time>{hours + ":" + minutes}</Time>
+
+                <StyledBtn secondary>Inventory</StyledBtn>
 
                 {/* </ColumnLeft> */}
                 {/* <ColumnRight>

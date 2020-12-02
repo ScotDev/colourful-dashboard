@@ -1,20 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Card } from '../../../ui-components/Card';
 
 import styled from 'styled-components';
 
 import Statistic from '../miniComponents/Statistic';
 import StatBreakdown from '../miniComponents/StatBreakdown';
 
-const Card = styled(motion.div)`
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    padding: 0.6rem 3rem 1rem 3rem;
-    height: 400px;
-    width: 375px;
-    overflow:hidden;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
-`
 const CardTitle = styled.h3`
     font-size:1.4rem;
     font-weight:400;
@@ -50,7 +42,7 @@ const Breakdown = styled.div`
 
 export default function DataCard({ title, chartImg }) {
     return (
-        <Card whileHover={{ scale: 1.01, origin: 0, boxShadow: "0 8px 16px 0 rgba(0,0,0,0.6)", cursor: "pointer" }} transition={{ type: "spring", stiffness: 100 }}>
+        <Card>
             <CardTitle>{title}</CardTitle>
             <CardContent>
                 <ColumnLeft>
